@@ -1,5 +1,6 @@
 //SPDX-License-Identifier:  UNLICENSED
 pragma solidity >=0.7.0 <=0.9.0;
+import "hardhat/console.sol";
 
 contract AwesomeToken {
     event Transfer(address indexed _from,
@@ -9,38 +10,35 @@ contract AwesomeToken {
                    address indexed _spender,
                    uint256 _value);
 
-    string private _tokenSymbol;
-    string private _tokenName;
-    uint private _tokenSupply;
-    uint128 private _mintCount;
-    uint128 private _burnCount;
-    uint128 private _transferCount;
+    string private tokenSymbol;
+    string private tokenName;
+    uint private tokenSupply;
+    uint128 private mintCount;
+    uint128 private burnCount;
+    uint128 private transferCount;
+    address public owner;
 
     mapping(address => uint) ownerBalance;
     mapping(address => mapping(address => uint)) approvedAmount;
 
-    constructor() {
-        _tokenSymbol = 'AWT';
-        _tokenName = 'AwesomeTOKEN';
-        _tokenSupply = 10000;
-    }
-
-    // // Test function: Wouldn't exist in the actual contract
-    function addtesttoken(address _to) public returns (bool) {
-        ownerBalance[_to] = 5;
-        return true;
+    constructor(uint _tokenSupply) {
+        tokenSymbol = 'AWT';
+        tokenName = 'AWESOMEToken';
+        tokenSupply = _tokenSupply;
+        owner = msg.sender;
+        ownerBalance[owner] = tokenSupply;
     }
 
     function name() public view returns (string memory) {
-        return _tokenName;
+        return tokenName;
     }
 
     function symbol() public view returns (string memory) {
-        return _tokenSymbol;
+        return tokenSymbol;
     }
 
     function totalSupply() public view returns (uint256) {
-        return _tokenSupply;
+        return tokenSupply;
     }
 
     function balanceOf(address _owner) public view returns (uint256 balance) {
@@ -51,7 +49,7 @@ contract AwesomeToken {
         _beforeTokenTransfer(_from, _to, _value);
 
         ownerBalance[_from] -= _value;
-        ownerBalance[_to] = _value;
+        ownerBalance[_to] += _value;
         emit Transfer(_from, _to, _value);
         return true;
     }
@@ -82,7 +80,8 @@ contract AwesomeToken {
         uint balance = ownerBalance[account];
         require(balance >= amount);
         ownerBalance[account] -= amount;
-        _tokenSupply -= amount;
+        tokenSupply -= amount;
+        console.log('burn %s', tokenSupply);
 
         emit Transfer(account, address(0), amount);
         success = true;
@@ -90,9 +89,10 @@ contract AwesomeToken {
 
     function mint(address account, uint256 amount) public returns (bool success) {
         _beforeTokenTransfer(address(0), account, amount);
-        require(amount <= _tokenSupply);
-        _tokenSupply += amount;
+        require(amount <= tokenSupply);
+        tokenSupply += amount;
         ownerBalance[account] += amount;
+        console.log('mint %s', tokenSupply);
 
         emit Transfer(address(0), account, amount);
         success = true;
@@ -100,13 +100,21 @@ contract AwesomeToken {
 
     function _beforeTokenTransfer(address _from, address _to, uint256 amount) private returns (bool) {
         if (_from == address(0)) {
-            _mintCount += 1;
+            mintCount += 1;
         } else if (_to == address(0)) {
-            _burnCount += 1;
+            burnCount += 1;
         } else {
-            _transferCount += 1;
+            transferCount += 1;
         }
 
         return true;
+    }
+
+    function returnCounts() external view returns (uint minted,
+                                                   uint burned,
+                                                   uint transfered) {
+        minted = mintCount;
+        burned = burnCount;
+        transfered = transferCount;
     }
 }
