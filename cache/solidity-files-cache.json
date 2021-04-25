@@ -108,8 +108,8 @@
       ]
     },
     "/Users/shivamkalra/Documents/TargetMoneyClub/contracts/targetChitFund.sol": {
-      "lastModificationDate": 1619351899169,
-      "contentHash": "b19ccb7dc2a6756960dbf2baea66ae1d",
+      "lastModificationDate": 1619372268905,
+      "contentHash": "7770bb780f3656753aa6844d0df807f7",
       "sourceName": "contracts/targetChitFund.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -134,6 +134,7 @@
         }
       },
       "imports": [
+        "./erc20Interface.sol",
         "hardhat/console.sol"
       ],
       "versionPragmas": [
