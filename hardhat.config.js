@@ -29,6 +29,14 @@ module.exports = {
         version: "0.7.0"
       }
     ]
+  },
+  networks: {
+    hardhat: {
+      forking: {
+        url: "https://eth-mainnet.alchemyapi.io/v2/bTkMKOKwfEsEpU-frKzLzu5wXPT-1dS6",
+        blockNumber: 12321582
+      }
+    }
   }
 };
 

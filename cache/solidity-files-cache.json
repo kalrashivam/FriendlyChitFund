@@ -108,8 +108,8 @@
       ]
     },
     "/Users/shivamkalra/Documents/TargetMoneyClub/contracts/targetChitFund.sol": {
-      "lastModificationDate": 1619372268905,
-      "contentHash": "7770bb780f3656753aa6844d0df807f7",
+      "lastModificationDate": 1619516200286,
+      "contentHash": "dc42afa970aa8edfe8e9fb0b4b1012e3",
       "sourceName": "contracts/targetChitFund.sol",
       "solcConfig": {
         "version": "0.8.0",
